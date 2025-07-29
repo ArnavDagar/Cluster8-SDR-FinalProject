@@ -1,8 +1,8 @@
 from imports import *
 from receive_function import receive_bits
 #import adi
-#from comms_lib.pluto import Pluto
-from cosmos_final import Pluto
+from comms_lib.pluto import Pluto
+#from cosmos_final import Pluto
 
 def simple_receive(usb_address="usb:1.5.5", expected_bits=8, M=2, K=5):
     
