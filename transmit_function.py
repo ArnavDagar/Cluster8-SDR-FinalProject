@@ -16,6 +16,6 @@ def transmit_bits(sdr, data_bits, M=2, K=5):
     
     # Step 3: Transmit through SDR
     sdr.tx(message_signal)
-    print("Transmission complete!")
+    print("Transmission complete")
     
     return len(symbols), len(message_signal) 

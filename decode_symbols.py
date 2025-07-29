@@ -6,39 +6,30 @@ def decode_symbols(symbols, M = 2):
     bits = []
     
     for symbol in symbols:
+        decimal = 0
+        
         if M == 2:
-            if symbol == -1:
-                decimal = 0
-            elif symbol == 1:
-                decimal = 1
+            # Fix phase inversion: swap the mapping
+            if abs(symbol - (-1)) < abs(symbol - 1):
+                decimal = 1  # Changed from 0
+            else:
+                decimal = 0  # Changed from 1
                 
         elif M == 4:
-            if symbol == 3:
-                decimal = 0
-            elif symbol == 1:
-                decimal = 1
-            elif symbol == -1:
-                decimal = 2
-            elif symbol == -3:
-                decimal = 3
+            # Fix for M=4 (swap constellation mapping)
+            distances = [abs(symbol - 3), abs(symbol - 1), abs(symbol - (-1)), abs(symbol - (-3))]
+            min_idx = distances.index(min(distances))
+            # Invert the mapping
+            mapping = [1, 0, 3, 2]  # Inverted from [0, 1, 2, 3]
+            decimal = mapping[min_idx]
                 
         elif M == 8:
-            if symbol == -7:
-                decimal = 0
-            elif symbol == -5:
-                decimal = 1
-            elif symbol == -3:
-                decimal = 2
-            elif symbol == -1:
-                decimal = 3
-            elif symbol == 1:
-                decimal = 4
-            elif symbol == 3:
-                decimal = 5
-            elif symbol == 5:
-                decimal = 6
-            elif symbol == 7:
-                decimal = 7
+            constellation = [-7, -5, -3, -1, 1, 3, 5, 7]
+            distances = [abs(symbol - point) for point in constellation]
+            min_idx = distances.index(min(distances))
+            # Invert the mapping
+            mapping = [7, 6, 5, 4, 3, 2, 1, 0]  # Inverted from [0, 1, 2, 3, 4, 5, 6, 7]
+            decimal = mapping[min_idx]
         
         bit_group = []
         for i in range(L):
@@ -48,4 +39,4 @@ def decode_symbols(symbols, M = 2):
         
         bits.extend(bit_group)
     
-    return bits 
+    return bits
